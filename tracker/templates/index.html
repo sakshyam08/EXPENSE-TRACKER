@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Expense Tracker</h1>
+
+        <!-- BALANCE -->
+        <div class="balance">
+            <h2>Your Balance</h2>
+            <p>$0.00</p>
+        </div>
+
+        <!-- INCOME & EXPENSES -->
+        <div class="summary">
+            <div>
+                <h3>Income</h3>
+                <p class="income">+$0.00</p>
+            </div>
+            <div>
+                <h3>Expenses</h3>
+                <p class="expense">-$0.00</p>
+            </div>
+        </div>
+
+        <!-- ADD TRANSACTION -->
+        <div class="transaction-form">
+            <h3>New Transaction</h3>
+            <input type="text" placeholder="Description" id="desc">
+            <input type="number" placeholder="Amount" id="amount">
+            <select id="type">
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+            </select>
+            <button onclick="addTransaction()">Add Transaction</button>
+        </div>
+
+        <!-- HISTORY -->
+        <div class="history">
+            <h3>Transaction History</h3>
+            <ul id="history-list">
+                <!-- transactions appear here -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let balance = 0;
+        let totalIncome = 0;
+        let totalExpense = 0;
+
+        function addTransaction() {
+            const desc = document.getElementById('desc').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+            const type = document.getElementById('type').value;
+
+            if(!desc || !amount) return alert('Please fill in all fields');
+
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="description">${desc}</span>
+                            <span class="amount ${type}">${type === 'income' ? '+' : '-'}$${amount.toFixed(2)}</span>`;
+            
+            document.getElementById('history-list').appendChild(li);
+
+            if(type === 'income') {
+                totalIncome += amount;
+                balance += amount;
+            } else {
+                totalExpense += amount;
+                balance -= amount;
+            }
+
+            // Update UI
+            document.querySelector('.balance p').innerText = `$${balance.toFixed(2)}`;
+            document.querySelector('.summary .income').innerText = `+$${totalIncome.toFixed(2)}`;
+            document.querySelector('.summary .expense').innerText = `-$${totalExpense.toFixed(2)}`;
+
+            // Clear fields
+            document.getElementById('desc').value = '';
+            document.getElementById('amount').value = '';
+        }
+    </script>
+</body>
+</html>
