@@ -15,77 +15,90 @@
         <!-- BALANCE -->
         <div class="balance">
             <h2>Your Balance</h2>
-            <p>$0.00</p>
+            <p>${{ balance|default:"0.00" }}</p>
         </div>
 
         <!-- INCOME & EXPENSES -->
         <div class="summary">
             <div>
                 <h3>Income</h3>
-                <p class="income">+$0.00</p>
+                <p class="income">+${{ income|default:"0.00" }}</p>
             </div>
             <div>
                 <h3>Expenses</h3>
-                <p class="expense">-$0.00</p>
+                <p class="expense">-${{ expense|default:"0.00" }}</p>
             </div>
         </div>
 
-        <!-- ADD TRANSACTION -->
+        <!-- ADD TRANSACTION FORM -->
         <div class="transaction-form">
             <h3>New Transaction</h3>
-            <input type="text" placeholder="Description" id="desc">
-            <input type="number" placeholder="Amount" id="amount">
-            <select id="type">
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
-            </select>
-            <button onclick="addTransaction()">Add Transaction</button>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="description" placeholder="Description" required>
+                <input type="number" name="amount" placeholder="Amount" step="0.01" required>
+                {% comment %} <select name="type" required>
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select> {% endcomment %}
+                <button type="submit">Add Transaction</button>
+            </form>
         </div>
 
         <!-- HISTORY -->
-        <div class="history">
-            <h3>Transaction History</h3>
-            <ul id="history-list">
-                <!-- transactions appear here -->
-            </ul>
-        </div>
+         {% comment %} <div class="history-header">
+
+
+   
+</div> {% endcomment %}
+
+       <div class="history">
+    <div class="history-header">
+        <h3>Transaction History</h3>
+
+        <span 
+            id="toggleHistory" 
+            onclick="toggleHistory()" 
+            data-tooltip="Hide transactions">
+            👁️
+        </span>
     </div>
 
-    <script>
-        let balance = 0;
-        let totalIncome = 0;
-        let totalExpense = 0;
+    <ul id="history-list">
+        {% for transaction in transactions %}
+            <li class="{% if transaction.expense_type == 'CREDIT' %}credit{% else %}debit{% endif %}">
+                <span class="description">{{ transaction.description }}</span>
+                <span class="amount">
+                    ${{ transaction.amount }}
+                </span>
+                <!-- DELETE BUTTON -->
+        <a href="{% url 'delete_transaction' transaction.id %}" class="delete-btn">🗑️</a>
+            </li>
+        {% empty %}
+            <li>No transactions yet</li>
+        {% endfor %}
+    </ul>
+</div>
 
-        function addTransaction() {
-            const desc = document.getElementById('desc').value;
-            const amount = parseFloat(document.getElementById('amount').value);
-            const type = document.getElementById('type').value;
 
-            if(!desc || !amount) return alert('Please fill in all fields');
-
-            const li = document.createElement('li');
-            li.innerHTML = `<span class="description">${desc}</span>
-                            <span class="amount ${type}">${type === 'income' ? '+' : '-'}$${amount.toFixed(2)}</span>`;
-            
-            document.getElementById('history-list').appendChild(li);
-
-            if(type === 'income') {
-                totalIncome += amount;
-                balance += amount;
-            } else {
-                totalExpense += amount;
-                balance -= amount;
-            }
-
-            // Update UI
-            document.querySelector('.balance p').innerText = `$${balance.toFixed(2)}`;
-            document.querySelector('.summary .income').innerText = `+$${totalIncome.toFixed(2)}`;
-            document.querySelector('.summary .expense').innerText = `-$${totalExpense.toFixed(2)}`;
-
-            // Clear fields
-            document.getElementById('desc').value = '';
-            document.getElementById('amount').value = '';
-        }
-    </script>
 </body>
+<script>
+function toggleHistory() {
+    const history = document.getElementById("history-list");
+    const icon = document.getElementById("toggleHistory");
+
+    history.classList.toggle("hidden");
+
+    if (history.classList.contains("hidden")) {
+        icon.textContent = "🙈";
+        icon.setAttribute("data-tooltip", "Show transactions");
+    } else {
+        icon.textContent = "👁️";
+        icon.setAttribute("data-tooltip", "Hide transactions");
+    }
+}
+</script>
+
+
+
 </html>
