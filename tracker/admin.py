@@ -8,5 +8,5 @@ admin.site.register(CurrentBalance)
 
 class TrackingHistoryAdmin(admin.ModelAdmin):
     list_display = ('date', 'amount', 'description','expense_type')
-
+    search_fields = ('description', 'expense_type')
 admin.site.register(TrackingHistory, TrackingHistoryAdmin)

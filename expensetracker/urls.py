@@ -22,7 +22,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('site-admin-view/', admin.site.urls),
     path('', include('tracker.urls')),
 ]
 if settings.DEBUG:

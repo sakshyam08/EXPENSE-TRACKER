@@ -12,7 +12,7 @@ class TrackingHistory(models.Model):
 
     date = models.DateField(auto_now_add=True)
     description = models.CharField(max_length=255)
-    amount = models.FloatField(default=0.0)
+    amount = models.FloatField(default=0.0, editable=False)
     # category = models.CharField(max_length=100)
     expense_type=models.CharField(choices=[('CREDIT','CREDIT'),('DEBIT','DEBIT')],max_length=10)
 
