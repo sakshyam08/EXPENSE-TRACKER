@@ -1,13 +1,58 @@
 from django.shortcuts import render
-# from httpcore import request
+#from httpcore import request
 from .models import CurrentBalance, TrackingHistory
 from django.shortcuts import redirect
 from decimal import Decimal as decimal
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
+
+from django.contrib import messages
 # Create your views here.
 from decimal import Decimal
 
+def login(request):
+    if request.method=="POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = User.objects.filter(username=username).first()
+
+        if user and user.check_password(password):
+            messages.success(request, "Login successful")
+            return redirect('index')
+        else:
+            messages.error(request, "Invalid username or password")
+            return redirect('login')
+    return render(request, 'login.html')
+
+def register(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+
+        if not username or not password:
+            messages.error(request, "Username and Password are required")
+            return redirect('register')
+
+        if User.objects.filter(username=username).exists():
+           
+            messages.error(request, "Username already exists")
+            return redirect('register')
+
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            first_name=first_name,
+            last_name=last_name
+        )
+
+        messages.success(request, "User created successfully")
+        return redirect('login')
+
+    return render(request, 'register.html')
 def index(request):
     # Ensure there is always a CurrentBalance object
     balance_obj, created = CurrentBalance.objects.get_or_create(defaults={'balance': 0})

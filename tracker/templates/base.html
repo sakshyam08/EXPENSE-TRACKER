@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+
+
+
+
+{% block content %}{% endblock %}
+
+</body>
+
+<script>
+function toggleHistory() {
+    const history = document.getElementById("history-list");
+    const icon = document.getElementById("toggleHistory");
+
+    history.classList.toggle("hidden");
+
+    if (history.classList.contains("hidden")) {
+        icon.textContent = "🙈";
+        icon.setAttribute("data-tooltip", "Show transactions");
+    } else {
+        icon.textContent = "👁️";
+        icon.setAttribute("data-tooltip", "Hide transactions");
+    }
+}
+</script>
+
+
+
+</html>

@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 class CurrentBalance(models.Model):
     balance = models.DecimalField(max_digits=10, decimal_places=2)
@@ -18,3 +18,13 @@ class TrackingHistory(models.Model):
 
     def __str__(self):
         return f"{self.date} - {self.description} - {self.amount} - {self.expense_type}"
+    
+
+class RequestLogs(models.Model):
+    request_info =models.TextField ()
+    request_type=models.CharField(max_length=100)
+    created_at=models.DateTimeField(auto_now_add =True)
+    
+    
+    
+

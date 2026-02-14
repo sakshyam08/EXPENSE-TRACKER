@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{%block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpenseTracker | Login</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    {% comment %} <style> {% endcomment %}
+        {% comment %} * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #4f46e5, #22c55e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: #fff;
+            width: 100%;
+            max-width: 420px;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            color: #111827;
+        }
+
+        .login-container p {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 0.4rem;
+            color: #374151;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #4f46e5;
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .options a {
+            text-decoration: none;
+            color: #4f46e5;
+        }
+
+        .options a:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            background: #4f46e5;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #4338ca;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .signup-link a {
+            color: #22c55e;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+    </style> {% endcomment %}
+</head>
+{% comment %} <body>
+
+    <div class="login-container">
+        <h2>Welcome Back</h2>
+        <p>Login to manage your expenses</p>
+
+        <form method="POST" action="">
+            <!-- CSRF token (for Django) -->
+            <!-- {% csrf_token %} -->
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required>
+            </div>
+
+            <div class="options">
+                <label>
+                    <input type="checkbox"> Remember me
+                </label>
+                <a href="#">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn">Login</button>
+        </form>
+
+        <div class="signup-link">
+            Don’t have an account? <a href="register.html">Sign up</a>
+        </div>
+    </div> {% endcomment %}
+
+      <div class="transaction-form" style="max-width: 400px; margin: 50px auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <h3>Login Page</h3>
+            {% if messages %}
+    {% for message in messages %}
+        <div class="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="password" step="0.01" required>
+                {% comment %} <select name="type" required>
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select> {% endcomment %}
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+     <div class="signup-link" style="text-align: center; margin-top: 20px;">
+           
+        <p>Don't have an account? <a href="{% url 'register' %}" >Register</a> </p>
+
+        </div>
+
+
+</body>
+</html>
+
+{%endblock%}
