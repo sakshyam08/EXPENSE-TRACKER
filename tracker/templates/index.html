@@ -5,12 +5,14 @@
     <div class="container">
         <h1>Expense Tracker</h1>
         <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">Logout</button>
-
+        {{request.user.username}}
         <!-- BALANCE -->
         <div class="balance">
             <h2>Your Balance</h2>
             <p>${{ balance|default:"0.00" }}</p>
         </div>
+  
+
 
         <!-- INCOME & EXPENSES -->
         <div class="summary">

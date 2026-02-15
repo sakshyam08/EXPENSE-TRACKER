@@ -16,7 +16,7 @@ from decimal import Decimal
 
 
 
-def login(request):
+def login_view(request):
     if request.method=="POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -24,6 +24,7 @@ def login(request):
         user = User.objects.filter(username=username).first()
 
         if user and user.check_password(password):
+            login(request, user)
             messages.success(request, "Login successful")
             return redirect('index')
         else:
@@ -66,6 +67,7 @@ def logout(request):
 
 @login_required(login_url='login')
 def index(request):
+    print(request.user.username)
     # Ensure there is always a CurrentBalance object
     balance_obj, created = CurrentBalance.objects.get_or_create(defaults={'balance': 0})
 
