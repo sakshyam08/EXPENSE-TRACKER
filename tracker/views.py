@@ -6,10 +6,15 @@ from decimal import Decimal as decimal
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout,login
 
 from django.contrib import messages
 # Create your views here.
 from decimal import Decimal
+
+
+
 
 def login(request):
     if request.method=="POST":
@@ -53,6 +58,13 @@ def register(request):
         return redirect('login')
 
     return render(request, 'register.html')
+
+def logout(request):
+    
+    messages.success(request, "Logged out successfully")
+    return redirect('login')
+
+@login_required(login_url='login')
 def index(request):
     # Ensure there is always a CurrentBalance object
     balance_obj, created = CurrentBalance.objects.get_or_create(defaults={'balance': 0})
